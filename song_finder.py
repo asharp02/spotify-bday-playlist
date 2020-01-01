@@ -1,4 +1,8 @@
+import time
+import requests
+
 from datetime import datetime
+import billboard
 
 """ File that reads in a date from the command line and 
 finds the top song on that day for all years since that date"""
@@ -43,4 +47,11 @@ def grab_birthday():
 
 
 # Iterate through all years since that date and query billboard for the #1 song on that date
+def get_top_songs(bday):
+    top_songs = []
+    for year in range(bday.year, datetime.now().year):
+        date = datetime(month=bday.month, day=bday.day, year=year)
+        formatted_date = date.strftime("%Y-%m-%d")
+        chart = billboard.ChartData("hot-100", date=formatted_date, timeout=None)
+        top_songs.append(chart[0])
 
